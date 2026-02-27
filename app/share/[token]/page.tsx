@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brand } from "@/components/layout/brand";
@@ -21,7 +21,7 @@ export default async function SharedPage({ params }: Params) {
     .eq("is_revoked", false)
     .single();
 
-  if (!link) notFound();
+  if (!link) redirect("/");
 
   const { data: profile } = await supabase
     .from("profiles")
