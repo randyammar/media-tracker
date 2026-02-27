@@ -1,20 +1,7 @@
 import type { Metadata } from "next";
-import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
-
-const headingFont = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["500", "700"],
-});
-
-const bodyFont = DM_Sans({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -33,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
+      <body className="antialiased">
         {children}
         <Toaster richColors />
       </body>
