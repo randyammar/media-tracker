@@ -24,7 +24,7 @@ This is enforced in both UI and backend endpoints.
 - Supabase Auth + Postgres + RLS
 - Gemini API (AI)
 - TMDB + RAWG (metadata for movie/game)
-- Vercel (deployment target)
+- Netlify (deployment target)
 
 ## Project Structure
 
@@ -106,17 +106,20 @@ Open `http://localhost:3000`.
 - `npm run build` - production build
 - `npm run start` - run production server
 
-## Deploy to Vercel
+## Deploy to Netlify
 
 1. Push repo to GitHub/GitLab/Bitbucket.
-2. Import project in Vercel.
-3. Add all env vars from `.env.example` in Vercel Project Settings.
-4. Ensure Supabase schema migration has been applied.
-5. Deploy.
+2. Import project in Netlify.
+3. Build settings:
+   - Build command: `npm run build`
+   - Publish directory: leave empty (Next.js runtime)
+4. Add all env vars from `.env.example` in Netlify Site Settings.
+5. Ensure Supabase schema migration has been applied.
+6. Deploy.
 
-After deployment, your live URL will be the Vercel production URL, e.g.:
+After deployment, your live URL will be the Netlify production URL, e.g.:
 
-`https://your-project-name.vercel.app`
+`https://your-project-name.netlify.app`
 
 ## Notes
 
