@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Collectify
 
-## Getting Started
+A full-stack Next.js app for tracking movies, music, and games with:
 
-First, run the development server:
+- Media CRUD (add/edit/delete)
+- Status tracking (`owned`, `wishlist`, `currently_using`, `completed`)
+- Search/filter by title, creator, genre, status, and media type
+- Secure share links (collection or single item)
+- AI metadata enrichment for **Music**
+- Insights dashboard (status, genre, release timeline)
+- Responsive UI built with shadcn/ui
+
+## Important Product Rule
+
+- Music does **not** use external metadata API lookup.
+- Music **does** use Gemini Assist Tools to generate data from title and existing item fields.
+
+This is enforced in both UI and backend endpoints.
+
+## Tech Stack
+
+- Next.js (App Router, TypeScript)
+- Tailwind + shadcn/ui
+- Supabase Auth + Postgres + RLS
+- Gemini API (AI)
+- TMDB + RAWG (metadata for movie/game)
+- Vercel (deployment target)
+
+## Project Structure
+
+```text
+app/
+  api/                   # Route handlers
+  app/                   # Authenticated app routes
+  auth/                  # Sign-in/sign-up pages
+  share/[token]/         # Public share link view
+components/
+  auth/
+  insights/
+  layout/
+  media/
+lib/
+  ai/
+  metadata/
+  supabase/
+supabase/migrations/
+  202602270001_init.sql
+```
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy env file and fill values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required environment variables:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `GEMINI_API_KEY`
+- `TMDB_API_KEY`
+- `RAWG_API_KEY`
+
+3. Apply database schema:
+
+- Open Supabase SQL Editor.
+- Run `supabase/migrations/202602270001_init.sql`.
+- Run `supabase/migrations/202602270002_share_links_persistent.sql`.
+
+4. Run the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Auth and Sharing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Users sign up/sign in via Supabase Auth (email/password).
+- Data is protected by row-level security.
+- Sharing is on-demand only:
+  - collection share link
+  - single-item share link
+- Share links are unlisted tokens and can be revoked.
 
-## Learn More
+## AI Features
 
-To learn more about Next.js, take a look at the following resources:
+- `POST /api/ai/enrich`:
+  - Enriches a Music item (genres/tags/summary/release date/rating/cover image URL)
+  - For Music, enrichment is generated from title and existing item data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` - run development server
+- `npm run lint` - lint code
+- `npm run build` - production build
+- `npm run start` - run production server
 
-## Deploy on Vercel
+## Deploy to Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push repo to GitHub/GitLab/Bitbucket.
+2. Import project in Vercel.
+3. Add all env vars from `.env.example` in Vercel Project Settings.
+4. Ensure Supabase schema migration has been applied.
+5. Deploy.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After deployment, your live URL will be the Vercel production URL, e.g.:
+
+`https://your-project-name.vercel.app`
+
+## Notes
+
+- Next.js 16 currently warns that `middleware.ts` is deprecated in favor of `proxy.ts`.
+- The app still works correctly; migration to `proxy.ts` can be done in a follow-up refactor.

@@ -1,0 +1,23 @@
+<svg width="1280" height="900" viewBox="0 0 1280 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="music-bg" x1="120" y1="120" x2="1110" y2="820" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="0.5" stop-color="#EC4899"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="900" rx="48" fill="url(#music-bg)"/>
+  <circle cx="1030" cy="200" r="150" fill="#FFFFFF" fill-opacity="0.12"/>
+  <circle cx="210" cy="740" r="180" fill="#FFFFFF" fill-opacity="0.08"/>
+
+  <circle cx="620" cy="460" r="245" fill="#0B1220" fill-opacity="0.75" stroke="#FBCFE8" stroke-opacity="0.5" stroke-width="4"/>
+  <circle cx="620" cy="460" r="142" fill="#111827" stroke="#FDE68A" stroke-opacity="0.4" stroke-width="4"/>
+  <circle cx="620" cy="460" r="52" fill="#FDE68A"/>
+
+  <path d="M830 255V540C830 598 782 646 724 646C666 646 618 598 618 540C618 482 666 434 724 434C750 434 774 444 792 460V305L990 250V450C990 508 942 556 884 556C826 556 778 508 778 450C778 392 826 344 884 344C909 344 932 353 950 369V206L830 255Z" fill="#F8FAFC" fill-opacity="0.9"/>
+
+  <rect x="300" y="236" width="200" height="14" rx="7" fill="#FEF3C7"/>
+  <rect x="300" y="276" width="160" height="14" rx="7" fill="#FDE68A"/>
+  <rect x="300" y="316" width="190" height="14" rx="7" fill="#FCD34D"/>
+</svg>
+

@@ -1,0 +1,26 @@
+<svg width="1280" height="900" viewBox="0 0 1280 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="game-bg" x1="90" y1="80" x2="1140" y2="840" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22C55E"/>
+      <stop offset="0.45" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="900" rx="48" fill="url(#game-bg)"/>
+  <circle cx="1080" cy="170" r="130" fill="#FFFFFF" fill-opacity="0.11"/>
+  <circle cx="210" cy="730" r="180" fill="#FFFFFF" fill-opacity="0.09"/>
+
+  <path d="M426 330C450 286 498 258 550 258H730C782 258 830 286 854 330L930 467C961 524 946 596 892 631C840 664 774 663 724 629L680 598C656 580 624 580 600 598L556 629C506 663 440 664 388 631C334 596 319 524 350 467L426 330Z" fill="#0B1220" fill-opacity="0.78" stroke="#BFDBFE" stroke-opacity="0.45" stroke-width="4"/>
+
+  <rect x="490" y="410" width="140" height="36" rx="12" fill="#E2E8F0"/>
+  <rect x="542" y="358" width="36" height="140" rx="12" fill="#E2E8F0"/>
+
+  <circle cx="770" cy="426" r="24" fill="#F43F5E"/>
+  <circle cx="830" cy="486" r="24" fill="#FB7185"/>
+  <circle cx="830" cy="426" r="24" fill="#F59E0B"/>
+  <circle cx="770" cy="486" r="24" fill="#22C55E"/>
+
+  <rect x="548" y="544" width="184" height="20" rx="10" fill="#93C5FD"/>
+  <rect x="575" y="582" width="130" height="14" rx="7" fill="#BFDBFE"/>
+</svg>
+

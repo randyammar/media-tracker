@@ -1,0 +1,21 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="collectify-bg" x1="24" y1="20" x2="154" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0EA5E9"/>
+      <stop offset="0.55" stop-color="#22C55E"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="collectify-cut" x1="48" y1="46" x2="126" y2="132" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E2E8F0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="18" y="18" width="144" height="144" rx="34" fill="url(#collectify-bg)"/>
+  <rect x="38" y="38" width="104" height="104" rx="24" fill="#0B1220" fill-opacity="0.15"/>
+  <path d="M122 58C110 47 95 42 80 44C56 47 39 67 39 91C39 116 58 136 84 136C96 136 107 132 116 124L104 108C99 113 92 116 84 116C70 116 59 105 59 91C59 77 69 66 83 64C91 63 98 66 103 72L122 58Z" fill="url(#collectify-cut)"/>
+  <circle cx="121" cy="120" r="16" fill="#0EA5E9"/>
+  <path d="M121 112V128" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+  <path d="M113 120H129" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+</svg>
+
