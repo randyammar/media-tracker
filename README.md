@@ -112,7 +112,7 @@ Open `http://localhost:3000`.
 2. Import project in Netlify.
 3. Build settings:
    - Build command: `npm run build`
-   - Publish directory: leave empty (Next.js runtime)
+   - Publish directory: `.next`
 4. Add all env vars from `.env.example` in Netlify Site Settings.
 5. Ensure Supabase schema migration has been applied.
 6. Deploy.
