@@ -8,6 +8,14 @@ import { MEDIA_STATUSES, MEDIA_TYPES, MediaItem, MediaStatus, MediaType } from "
 import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -27,6 +35,7 @@ export function MediaTable() {
   const [mediaType, setMediaType] = useState<MediaType | "all">("all");
   const [genre, setGenre] = useState("");
   const [busyItemId, setBusyItemId] = useState("");
+  const [deleteCandidate, setDeleteCandidate] = useState<MediaItem | null>(null);
 
   const loadItems = useCallback(async () => {
     setLoading(true);
@@ -78,6 +87,7 @@ export function MediaTable() {
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(payload.error ?? "Delete failed");
       setItems((current) => current.filter((entry) => entry.id !== item.id));
+      setDeleteCandidate(null);
       toast.success("Item deleted");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Delete failed");
@@ -101,8 +111,8 @@ export function MediaTable() {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid gap-3 md:grid-cols-4">
-          <div className="relative md:col-span-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
+          <div className="relative sm:col-span-2 lg:col-span-4">
             <Search className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" />
             <Input
               className="pl-9"
@@ -111,34 +121,40 @@ export function MediaTable() {
               onChange={(e) => setQ(e.target.value)}
             />
           </div>
-          <Select value={status} onValueChange={(value) => setStatus(value as MediaStatus | "all")}>
-            <SelectTrigger>
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              {MEDIA_STATUSES.map((entry) => (
-                <SelectItem key={entry} value={entry}>
-                  {MEDIA_STATUS_LABELS[entry]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={mediaType} onValueChange={(value) => setMediaType(value as MediaType | "all")}>
-            <SelectTrigger>
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
-              {MEDIA_TYPES.map((entry) => (
-                <SelectItem key={entry} value={entry}>
-                  {MEDIA_TYPE_LABELS[entry]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Input placeholder="Filter by genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
-          <Button variant="secondary" onClick={loadItems}>
+          <div className="lg:col-span-2">
+            <Select value={status} onValueChange={(value) => setStatus(value as MediaStatus | "all")}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                {MEDIA_STATUSES.map((entry) => (
+                  <SelectItem key={entry} value={entry}>
+                    {MEDIA_STATUS_LABELS[entry]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="lg:col-span-2">
+            <Select value={mediaType} onValueChange={(value) => setMediaType(value as MediaType | "all")}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All types</SelectItem>
+                {MEDIA_TYPES.map((entry) => (
+                  <SelectItem key={entry} value={entry}>
+                    {MEDIA_TYPE_LABELS[entry]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="sm:col-span-1 lg:col-span-3">
+            <Input placeholder="Filter by genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
+          </div>
+          <Button variant="secondary" className="sm:col-span-1 lg:col-span-1 lg:w-full" onClick={loadItems}>
             Refresh
           </Button>
         </div>
@@ -157,7 +173,7 @@ export function MediaTable() {
                   <TableHead>Creator</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Genres</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -189,14 +205,16 @@ export function MediaTable() {
                       </Select>
                     </TableCell>
                     <TableCell>{item.genre.join(", ") || "-"}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-2">
+                    <TableCell className="text-right">
+                      <div className="ml-auto flex w-fit items-center gap-2">
                         <ShareLinkDialog scopeType="item" mediaItemId={item.id} triggerLabel="Share" />
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="icon-sm"
+                          className="text-destructive hover:text-destructive"
                           disabled={busyItemId === item.id}
-                          onClick={() => deleteItem(item)}
+                          onClick={() => setDeleteCandidate(item)}
+                          aria-label={`Delete ${item.title}`}
                         >
                           <Trash2 />
                         </Button>
@@ -216,6 +234,36 @@ export function MediaTable() {
           </div>
         )}
       </CardContent>
+      <Dialog open={Boolean(deleteCandidate)} onOpenChange={(open) => !open && setDeleteCandidate(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete media item?</DialogTitle>
+            <DialogDescription>
+              This will permanently delete{" "}
+              <span className="font-medium text-foreground">{deleteCandidate?.title ?? "this item"}</span>.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteCandidate(null)}
+              disabled={Boolean(deleteCandidate && busyItemId === deleteCandidate.id)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => deleteCandidate && deleteItem(deleteCandidate)}
+              disabled={Boolean(deleteCandidate && busyItemId === deleteCandidate.id)}
+            >
+              {deleteCandidate && busyItemId === deleteCandidate.id ? <Loader2 className="animate-spin" /> : null}
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
