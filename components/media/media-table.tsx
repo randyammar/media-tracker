@@ -98,11 +98,15 @@ export function MediaTable() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <CardTitle>Media Library</CardTitle>
-        <div className="flex flex-wrap gap-2">
-          <ShareLinkDialog scopeType="collection" triggerLabel="Share collection" />
-          <Button asChild>
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          <ShareLinkDialog
+            scopeType="collection"
+            triggerLabel="Share collection"
+            triggerClassName="w-full justify-center sm:w-auto"
+          />
+          <Button asChild className="w-full sm:w-auto">
             <Link href="/app/media/new">
               <Plus />
               Add media
@@ -110,7 +114,7 @@ export function MediaTable() {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 px-4 sm:px-6">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
           <div className="relative sm:col-span-2 lg:col-span-4">
             <Search className="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground" />
@@ -154,7 +158,11 @@ export function MediaTable() {
           <div className="sm:col-span-1 lg:col-span-3">
             <Input placeholder="Filter by genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
           </div>
-          <Button variant="secondary" className="sm:col-span-1 lg:col-span-1 lg:w-full" onClick={loadItems}>
+          <Button
+            variant="secondary"
+            className="w-full sm:col-span-1 lg:col-span-1 lg:w-full"
+            onClick={loadItems}
+          >
             Refresh
           </Button>
         </div>
@@ -163,36 +171,39 @@ export function MediaTable() {
           <div className="flex h-40 items-center justify-center">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
+        ) : items.length === 0 ? (
+          <div className="rounded-xl border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
+            No media items match the current filters.
+          </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Creator</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Genres</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <Link className="font-medium underline-offset-4 hover:underline" href={`/app/media/${item.id}`}>
-                        {item.title}
+          <>
+            <div className="space-y-3 lg:hidden">
+              {items.map((item) => (
+                <div key={item.id} className="space-y-4 rounded-xl border p-4">
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <Link
+                        className="min-w-0 flex-1 text-base font-medium underline-offset-4 hover:underline"
+                        href={`/app/media/${item.id}`}
+                      >
+                        <span className="break-words">{item.title}</span>
                       </Link>
-                    </TableCell>
-                    <TableCell>{MEDIA_TYPE_LABELS[item.media_type]}</TableCell>
-                    <TableCell>{item.creator}</TableCell>
-                    <TableCell>
+                      <span className="rounded-full border bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">
+                        {MEDIA_TYPE_LABELS[item.media_type]}
+                      </span>
+                    </div>
+                    <p className="break-words text-sm text-muted-foreground">{item.creator || "-"}</p>
+                  </div>
+
+                  <div className="grid gap-3">
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Status</p>
                       <Select
                         value={item.status}
                         onValueChange={(value) => updateStatus(item, value as MediaStatus)}
                         disabled={busyItemId === item.id}
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full">
                           <SelectValue>{MEDIA_STATUS_LABELS[item.status]}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
@@ -203,35 +214,104 @@ export function MediaTable() {
                           ))}
                         </SelectContent>
                       </Select>
-                    </TableCell>
-                    <TableCell>{item.genre.join(", ") || "-"}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="ml-auto flex w-fit items-center gap-2">
-                        <ShareLinkDialog scopeType="item" mediaItemId={item.id} triggerLabel="Share" />
-                        <Button
-                          variant="outline"
-                          size="icon-sm"
-                          className="text-destructive hover:text-destructive"
-                          disabled={busyItemId === item.id}
-                          onClick={() => setDeleteCandidate(item)}
-                          aria-label={`Delete ${item.title}`}
-                        >
-                          <Trash2 />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {items.length === 0 ? (
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Genres</p>
+                      <p className="break-words text-sm text-muted-foreground">
+                        {item.genre.length > 0 ? item.genre.join(", ") : "-"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <ShareLinkDialog
+                      scopeType="item"
+                      mediaItemId={item.id}
+                      triggerLabel="Share"
+                      triggerClassName="w-full justify-center sm:w-auto"
+                    />
+                    <Button
+                      variant="outline"
+                      className="w-full justify-center text-destructive hover:text-destructive sm:w-auto"
+                      disabled={busyItemId === item.id}
+                      onClick={() => setDeleteCandidate(item)}
+                    >
+                      <Trash2 />
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="hidden rounded-xl border lg:block">
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
-                      No media items match the current filters.
-                    </TableCell>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Creator</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Genres</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ) : null}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {items.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="max-w-64 whitespace-normal">
+                        <Link
+                          className="font-medium underline-offset-4 hover:underline"
+                          href={`/app/media/${item.id}`}
+                        >
+                          {item.title}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{MEDIA_TYPE_LABELS[item.media_type]}</TableCell>
+                      <TableCell className="max-w-56 whitespace-normal">{item.creator || "-"}</TableCell>
+                      <TableCell>
+                        <Select
+                          value={item.status}
+                          onValueChange={(value) => updateStatus(item, value as MediaStatus)}
+                          disabled={busyItemId === item.id}
+                        >
+                          <SelectTrigger className="min-w-[11rem]">
+                            <SelectValue>{MEDIA_STATUS_LABELS[item.status]}</SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            {MEDIA_STATUSES.map((entry) => (
+                              <SelectItem key={entry} value={entry}>
+                                {MEDIA_STATUS_LABELS[entry]}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                      <TableCell className="max-w-72 whitespace-normal">
+                        {item.genre.length > 0 ? item.genre.join(", ") : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="ml-auto flex w-fit items-center gap-2">
+                          <ShareLinkDialog scopeType="item" mediaItemId={item.id} triggerLabel="Share" />
+                          <Button
+                            variant="outline"
+                            size="icon-sm"
+                            className="text-destructive hover:text-destructive"
+                            disabled={busyItemId === item.id}
+                            onClick={() => setDeleteCandidate(item)}
+                            aria-label={`Delete ${item.title}`}
+                          >
+                            <Trash2 />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
       </CardContent>
       <Dialog open={Boolean(deleteCandidate)} onOpenChange={(open) => !open && setDeleteCandidate(null)}>

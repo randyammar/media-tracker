@@ -123,5 +123,5 @@ After deployment, your live URL will be the Netlify production URL, e.g.:
 
 ## Notes
 
-- Next.js 16 currently warns that `middleware.ts` is deprecated in favor of `proxy.ts`.
-- The app still works correctly; migration to `proxy.ts` can be done in a follow-up refactor.
+- Next.js 16 deprecates `middleware.ts` in favor of `proxy.ts`.
+- This repository uses `proxy.ts` for request interception.

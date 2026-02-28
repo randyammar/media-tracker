@@ -19,9 +19,15 @@ interface ShareLinkDialogProps {
   scopeType: "collection" | "item";
   mediaItemId?: string;
   triggerLabel: string;
+  triggerClassName?: string;
 }
 
-export function ShareLinkDialog({ scopeType, mediaItemId, triggerLabel }: ShareLinkDialogProps) {
+export function ShareLinkDialog({
+  scopeType,
+  mediaItemId,
+  triggerLabel,
+  triggerClassName,
+}: ShareLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [link, setLink] = useState("");
   const [linkId, setLinkId] = useState("");
@@ -136,7 +142,7 @@ export function ShareLinkDialog({ scopeType, mediaItemId, triggerLabel }: ShareL
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="outline" size="sm">
+        <Button type="button" variant="outline" size="sm" className={triggerClassName}>
           <Link2 />
           {triggerLabel}
         </Button>
