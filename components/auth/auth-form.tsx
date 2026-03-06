@@ -37,7 +37,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
         toast.success("Account created. Check your email for confirmation.");
-        router.push("/auth/sign-in");
+        router.push("/sign-in");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;

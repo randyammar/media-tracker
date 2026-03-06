@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
 
 const protectedPrefixes = ["/app"];
-const authPrefixes = ["/auth/sign-in", "/auth/sign-up"];
+const authPrefixes = ["/sign-in", "/sign-up", "/auth/sign-in", "/auth/sign-up"];
 
 export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/sign-in";
+    url.pathname = "/sign-in";
     return NextResponse.redirect(url);
   }
 
@@ -26,5 +26,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/auth/sign-in", "/auth/sign-up"],
+  matcher: ["/app/:path*", "/sign-in", "/sign-up", "/auth/sign-in", "/auth/sign-up"],
 };

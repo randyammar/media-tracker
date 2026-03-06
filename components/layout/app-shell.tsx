@@ -60,7 +60,7 @@ export function AppShell({ children, userEmail }: AppShellProps) {
       return;
     }
     toast.success("Signed out");
-    router.push("/auth/sign-in");
+    router.push("/sign-in");
   }
 
   return (
