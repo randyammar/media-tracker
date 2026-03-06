@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth/auth-form";
 
+export const dynamic = "force-dynamic";
+
 export default function SignUpPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6 py-10">
@@ -16,4 +18,3 @@ export default function SignUpPage() {
     </main>
   );
 }
-
