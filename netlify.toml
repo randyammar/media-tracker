@@ -1,6 +1,5 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  command = "rm -rf .next && npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
